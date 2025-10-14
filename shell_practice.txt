@@ -1,0 +1,92 @@
+Create
+------
+bank = Bank(
+    name="Meezan Bank",
+    swift_code="MEZNPKKA",
+    is_islamic=True,
+    established_date=date(1997, 1, 1)
+)
+bank.save()
+
+------
+Filter
+------
+islamic_banks = Bank.objects.filter(is_islamic=True)
+non_islamic_banks = Bank.objects.filter(is_islamic=False)
+and_query = Bank.objects.filter(is_islamic=True, name="Meezan Bank")
+
+//Filter Islamic banks with active accounts
+banks = Bank.objects.filter(is_islamic=True, branches__branch_accounts__is_active=True)
+
+
+------
+Get
+------
+bank = Bank.objects.get(name="Meezan Bank")
+bank = Bank.objects.get(pk=1)
+bank = Bank.objects.filter(pk=1).first() (Safe-Get)
+
+
+
+------
+Values
+------
+//get all the fields
+banks = Bank.objects.values()
+
+//get the name column only
+banks = Bank.objects.values('name')
+
+
+--------------
+Select_related
+--------------
+
+//Get BankAccounts with Branch
+accounts = BankAccount.objects.select_related('branch')
+
+//Get BankAccounts with Branch and User
+accounts = BankAccount.objects.select_related('user', 'branch')
+
+
+----------------
+Prefetch_related
+----------------
+
+//Get all banks with their branches
+banks = Bank.objects.prefetch_related('branches').all()
+
+//Get all users with their bankaccounts
+users = User.objects.prefetch_related('user_accounts')
+
+
+
+--------
+Annotate
+--------
+
+//Annotate banks with account counts (2 level annotation)
+banks = Bank.objects.annotate(
+    total_accounts=Count('branches__branch_accounts')
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
