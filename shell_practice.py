@@ -77,24 +77,3 @@ users = User.objects.prefetch_related('user_accounts')
 banks = Bank.objects.annotate(
     total_accounts=Count('branches__branch_accounts')
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -15,4 +15,3 @@ class AdminBankBranch(admin.ModelAdmin):
     list_filter = ("bank",)
     search_fields = ("bank__name", "name",)
 
-
