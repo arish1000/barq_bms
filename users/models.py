@@ -7,6 +7,7 @@ class BaseModel(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
 
+
     class Meta:
         abstract = True
 
@@ -15,6 +16,7 @@ class User(AbstractUser):
     date_of_birth = models.DateField()
 
     REQUIRED_FIELDS = ["date_of_birth", "phone"]
+
 
     class Meta:
         verbose_name = "User"
