@@ -19,4 +19,4 @@ class Account(BaseModel):
         db_table = "bank_accounts"
 
     def __str__(self):
-        return self.account_number
+        return f"{self.account_number}-{self.user.username}"
