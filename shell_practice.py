@@ -1,4 +1,5 @@
 from datetime import date
+
 from django.db.models import Count
 
 from banks.models import Bank, Branch

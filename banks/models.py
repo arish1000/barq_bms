@@ -18,6 +18,7 @@ class Bank(BaseModel):
     def __str__(self):
         return self.name
 
+
 class Branch(BaseModel):
     name = models.CharField(max_length=100)
     branch_code = models.CharField(max_length=5)
@@ -34,6 +35,3 @@ class Branch(BaseModel):
 
     def __str__(self):
         return self.name
-
-
-
