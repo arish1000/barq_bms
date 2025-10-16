@@ -11,6 +11,7 @@ def login_view(request):
             username = request.POST.get('username')
             password = request.POST.get('password')
             user = authenticate(username=username, password=password)
+
             if user is not None:
                 login(request, user)
                 return redirect('admin:index')
@@ -19,8 +20,6 @@ def login_view(request):
 
     return render(request, 'users/login.html')
 
-
 def logout_view(request):
     logout(request)
     return redirect('login')
-

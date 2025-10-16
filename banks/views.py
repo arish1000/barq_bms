@@ -1,19 +1,18 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
 from django.http import JsonResponse
+from django.utils.decorators import method_decorator
 from django.views import View
 
 from banks.models import Bank
 
 
-class BankListView(LoginRequiredMixin, View):
+@method_decorator(login_required(login_url="/login/"), name="dispatch")
+class BankListView(View):
 
-    login_url = '/login/'
-
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         banks = Bank.objects.annotate(
-            branch_count=Count('branches')
+            branch_count=Count("branches")
         )
         data = [
             {
@@ -23,4 +22,5 @@ class BankListView(LoginRequiredMixin, View):
             }
             for bank in banks
         ]
-        return JsonResponse({'data': data})
+
+        return JsonResponse({"data": data})
