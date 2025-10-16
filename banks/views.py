@@ -1,18 +1,26 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from django.http import JsonResponse
+from django.views import View
 
 from banks.models import Bank
-from banks.serializers import BankListSerializer
 
 
-class BankListView(APIView):
+class BankListView(LoginRequiredMixin, View):
+
+    login_url = '/login/'
 
     def get(self, request):
         banks = Bank.objects.annotate(
             branch_count=Count('branches')
         )
-        serializer = BankListSerializer(banks, many=True)
-        return Response(serializer.data)
-
-
+        data = [
+            {
+                "name": bank.name,
+                "is_islamic": bank.is_islamic,
+                "branch_count": bank.branch_count,
+            }
+            for bank in banks
+        ]
+        return JsonResponse({'data': data})
