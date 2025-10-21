@@ -5,7 +5,9 @@ from django.contrib import messages
 
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect('admin:index')
+        next_url = request.GET.get('next', '/admin/')
+
+        return redirect(next_url)
     
     if request.method == 'POST':
             username = request.POST.get('username')
@@ -13,8 +15,11 @@ def login_view(request):
             user = authenticate(username=username, password=password)
 
             if user is not None:
+
                 login(request, user)
-                return redirect('admin:index')
+                next_url = request.GET.get('next', '/admin/')
+
+                return redirect(next_url)
             else:
                 messages.error(request, 'Invalid username or password.')
 
@@ -22,4 +27,5 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
+
     return redirect('login')

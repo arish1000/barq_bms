@@ -9,7 +9,6 @@ from banks.models import Bank
 
 @method_decorator(login_required(login_url="/login/"), name="dispatch")
 class BankListView(View):
-
     def get(self, request, *args, **kwargs):
         banks = Bank.objects.annotate(
             branch_count=Count("branches")
