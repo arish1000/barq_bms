@@ -7,7 +7,7 @@ from django.views import View
 from banks.models import Bank
 
 
-@method_decorator(login_required(login_url="/login/"), name="dispatch")
+@method_decorator(login_required(login_url="/users/login/"), name="dispatch")
 class BankListView(View):
     def get(self, request, *args, **kwargs):
         banks = Bank.objects.annotate(
