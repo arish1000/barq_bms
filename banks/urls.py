@@ -1,8 +1,12 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
-from banks.views import BankListView
+from banks.views import BankViewSet
 
+router = DefaultRouter()
+router.register(r'', BankViewSet, basename='bank')
 
 urlpatterns = [
-    path("", BankListView.as_view(), name="list-banks"),
+    path("", include(router.urls)),
 ]
+
