@@ -32,7 +32,6 @@ class BankListView(View):
 
         return JsonResponse({"data": data})
 
-
 class BankListApiView(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
@@ -48,7 +47,6 @@ class BankListApiView(APIView):
             "count": banks.count()
         }, status=status.HTTP_200_OK)
 
-
 class BankListGenericView(ListAPIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
@@ -59,7 +57,6 @@ class BankListGenericView(ListAPIView):
         return Bank.objects.annotate(
             branch_count=Count("branches")
         )
-
 
 class BankViewSet(ReadOnlyModelViewSet):
     authentication_classes = [SessionAuthentication]
