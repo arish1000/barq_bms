@@ -26,7 +26,6 @@ class AccountsListView(View):
 
 
 class AccountsListAPIView(APIView):
-
     def get(self, request, *args, **kwargs):
         accounts = Account.objects.select_related("branch__bank").filter(user=self.request.user)
         serializer = AccountsListSerializer(accounts, many=True)

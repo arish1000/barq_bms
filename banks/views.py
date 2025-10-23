@@ -32,7 +32,6 @@ class BankListView(View):
 
 
 class BankListApiView(APIView):
-    
     def get(self, request, *args, **kwargs):
         banks = Bank.objects.annotate(
             branch_count=Count("branches")
