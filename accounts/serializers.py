@@ -9,4 +9,12 @@ class AccountsListSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Account
-        fields = ["account_number", "balance", "bank_name"]
+        fields = ["id", "account_number", "balance", "bank_name"]
+
+
+class AccountsCreateSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = Account
+        fields = "__all__"

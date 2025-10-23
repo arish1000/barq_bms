@@ -5,12 +5,12 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.response import Response
 
 from banks.models import Bank
-from banks.serializers import BankListSerializer
+from banks.serializers import BankListSerializer, BankCreateSerializer
 
 
 @method_decorator(login_required(login_url="/users/login/"), name="dispatch")
@@ -58,3 +58,24 @@ class BankViewSet(ReadOnlyModelViewSet):
         return Bank.objects.annotate(
             branch_count=Count("branches")
         )
+
+
+class BankListCreateGenericView(ListCreateAPIView):
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return BankCreateSerializer
+        return BankListSerializer
+
+    def get_queryset(self):
+        return Bank.objects.annotate(
+            branch_count=Count("branches")
+        )
+
+
+class BankRetrieveUpdateDestroyGenericView(RetrieveUpdateDestroyAPIView):
+    queryset = Bank.objects.all()
+    
+    def get_serializer_class(self):
+        if self.request.method in ['PUT', 'PATCH']:
+            return BankCreateSerializer
+        return BankListSerializer

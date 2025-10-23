@@ -9,3 +9,10 @@ class BankListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bank
         fields = ["id", "name", "is_islamic", "branch_count"]
+
+
+class BankCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Bank
+        fields = ['name', 'swift_code', 'is_islamic', 'established_date']

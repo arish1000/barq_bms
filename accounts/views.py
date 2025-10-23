@@ -5,11 +5,11 @@ from django.utils.decorators import method_decorator
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from accounts.models import Account
-from accounts.serializers import AccountsListSerializer
+from accounts.serializers import AccountsListSerializer, AccountsCreateSerializer
 
 
 @method_decorator(login_required(login_url="/users/login/"), name="dispatch")
@@ -43,6 +43,30 @@ class AccountsListGenericAPIView(ListAPIView):
 
 class AccountsViewSet(ReadOnlyModelViewSet):
     serializer_class = AccountsListSerializer
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return Account.objects.select_related("branch__bank").filter(user=self.request.user)
+        return Account.objects.none()
+
+
+class AccountsCreateListGenericAPIView(ListCreateAPIView):
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return AccountsCreateSerializer
+        return AccountsListSerializer
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return Account.objects.select_related("branch__bank").filter(user=self.request.user)
+        return Account.objects.none()
+
+
+class AccountsRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return AccountsListSerializer
+        return AccountsCreateSerializer
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
