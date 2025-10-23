@@ -67,6 +67,7 @@ class BankViewSet(ReadOnlyModelViewSet):
     serializer_class = BankListSerializer
     
     def get_queryset(self):
+
         return Bank.objects.annotate(
             branch_count=Count("branches")
         )
