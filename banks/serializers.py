@@ -15,4 +15,4 @@ class BankCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Bank
-        fields = ['name', 'swift_code', 'is_islamic', 'established_date']
+        fields = ["name", "swift_code", "is_islamic", "established_date"]
