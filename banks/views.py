@@ -8,6 +8,8 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.response import Response
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from banks.models import Bank
 from banks.serializers import BankListSerializer, BankCreateSerializer
@@ -61,6 +63,9 @@ class BankViewSet(ReadOnlyModelViewSet):
 
 
 class BankListCreateGenericView(ListCreateAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return BankCreateSerializer
@@ -73,6 +78,8 @@ class BankListCreateGenericView(ListCreateAPIView):
 
 
 class BankRetrieveUpdateDestroyGenericView(RetrieveUpdateDestroyAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Bank.objects.all()
     
     def get_serializer_class(self):
