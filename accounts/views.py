@@ -12,6 +12,7 @@ from accounts.models import Account
 from accounts.serializers import AccountsListSerializer, AccountsCreateSerializer
 
 
+
 @method_decorator(login_required(login_url="/users/login/"), name="dispatch")
 class AccountsListView(View):
     def get(self, request, *args, **kwargs):
