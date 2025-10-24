@@ -5,10 +5,11 @@ from django.utils.decorators import method_decorator
 
 from accounts.models import Account
 
+
 @method_decorator(login_required(login_url="/users/login/"), name="dispatch")
 class AccountsListView(View):
     def get(self, request, *args, **kwargs):
-            accounts = Account.objects.select_related("branch__bank").filter(user=request.user)
+            accounts = Account.objects.select_related("branch__bank").filter(user=self.request.user)
             data = [ {
                 "account_number": acc.account_number,
                 "balance": acc.balance,
