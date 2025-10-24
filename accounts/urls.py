@@ -1,8 +1,7 @@
 from django.urls import path, include
 
-from accounts.views import AccountsCreateListGenericAPIView, AccountsRetrieveUpdateDestroyAPIView
+from accounts.views import AccountsListView
 
 urlpatterns = [
-    path("", AccountsCreateListGenericAPIView.as_view(), name="accounts-create-list"),
-    path("<int:pk>/", AccountsRetrieveUpdateDestroyAPIView.as_view(), name="accounts-detail"),
+    path("", AccountsListView.as_view(), name="accounts-list"),
 ]

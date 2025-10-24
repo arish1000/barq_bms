@@ -1,15 +1,16 @@
 from django.db.models import Count
+
 from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.response import Response
 
 from banks.models import Bank
-from banks.serializers import BankListSerializer
+from banks.serializers import BankListSerializer, BankCreateSerializer
 
 
-class BankListAPIView(APIView):
+class BankListApiView(APIView):
     def get(self, request, *args, **kwargs):
         banks = Bank.objects.annotate(
             branch_count=Count("branches")
@@ -20,7 +21,7 @@ class BankListAPIView(APIView):
         return Response(context, status=HTTP_200_OK)
 
 
-class BankListGenericAPIView(ListAPIView):
+class BankListGenericView(ListAPIView):
     serializer_class = BankListSerializer
 
     def get_queryset(self):
@@ -36,3 +37,24 @@ class BankViewSet(ReadOnlyModelViewSet):
         return Bank.objects.annotate(
             branch_count=Count("branches")
         )
+
+
+class BankListCreateGenericView(ListCreateAPIView):
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return BankCreateSerializer
+        return BankListSerializer
+
+    def get_queryset(self):
+        return Bank.objects.annotate(
+            branch_count=Count("branches")
+        )
+
+
+class BankRetrieveUpdateDestroyGenericView(RetrieveUpdateDestroyAPIView):
+    queryset = Bank.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.method in ['PUT', 'PATCH']:
+            return BankCreateSerializer
+        return BankListSerializer

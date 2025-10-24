@@ -1,11 +1,8 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 
-from banks.apis.views import BankViewSet
-
-router = DefaultRouter()
-router.register(r"", BankViewSet, basename="bank")
+from banks.apis.views import BankListCreateGenericView, BankRetrieveUpdateDestroyGenericView
 
 urlpatterns = [
-    path("", include(router.urls)),
+    path("", BankListCreateGenericView.as_view(), name="bank-list-create"),
+    path("<int:pk>/", BankRetrieveUpdateDestroyGenericView.as_view(), name="bank-detail"),
 ]
