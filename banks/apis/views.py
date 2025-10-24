@@ -9,7 +9,7 @@ from banks.models import Bank
 from banks.serializers import BankListSerializer
 
 
-class BankListApiView(APIView):
+class BankListAPIView(APIView):
     def get(self, request, *args, **kwargs):
         banks = Bank.objects.annotate(
             branch_count=Count("branches")
@@ -20,7 +20,7 @@ class BankListApiView(APIView):
         return Response(context, status=HTTP_200_OK)
 
 
-class BankListGenericView(ListAPIView):
+class BankListGenericAPIView(ListAPIView):
     serializer_class = BankListSerializer
 
     def get_queryset(self):
