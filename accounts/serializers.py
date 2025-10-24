@@ -18,3 +18,15 @@ class AccountsCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = "__all__"
+
+
+class AccountBalanceUpdateSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Account
+        fields = ["balance"]
+    
+    def validate_balance(self, value):
+        if value < 0:
+            raise serializers.ValidationError("Balance cannot be negative.")
+        return value
